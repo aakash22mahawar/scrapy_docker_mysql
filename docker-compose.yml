@@ -4,14 +4,29 @@ services:
   scrapy:
     build: .
     container_name: scrapy_container
-    environment:
-      MYSQL_HOST: 192.168.1.104    #pls use ipconfig getifaddr en0 (your local machine host)
-      MYSQL_USER: root
-      MYSQL_PASSWORD: confident22
-      MYSQL_DATABASE: books
+    depends_on:
+      - mysql
     networks:
-      - scrapy_mysql_local
-    command: ["wait-for-it", "mysql:3306", "--timeout=20", "--", "python", "/app/books/spiders/mybook.py"]
+      - scrapy_mysql_docker
+    command: [ "wait-for-it", "mysql:3306", "--timeout=20", "--", "python","/app/books/spiders/mybook.py" ]
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: confident22
+      MYSQL_DATABASE: books
+      MYSQL_PASSWORD: confident22
+      MYSQL_HOST: mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - scrapy_mysql_docker
+    volumes:
+      - mysql_data:/var/lib/mysql
 
 networks:
-  scrapy_mysql_local:
+  scrapy_mysql_docker:
+
+volumes:
+  mysql_data:

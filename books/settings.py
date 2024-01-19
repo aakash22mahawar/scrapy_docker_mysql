@@ -42,9 +42,10 @@ DOWNLOADER_MIDDLEWARES = {
 
 
 # MySQL Database Settings
-MYSQL_HOST = '192.168.1.104'    #pls use ipconfig getifaddr en0 (your local machine host)
+MYSQL_HOST = 'mysql'    #pls use service name of docker corresponding to mysql
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = 'confident22'
+MYSQL_PORT = 3306
 MYSQL_DATABASE = 'books'
 MYSQL_AUTOCOMMIT = True  # Set to True to enable autocommit
 
